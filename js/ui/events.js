@@ -55,9 +55,30 @@ function bindEvents() {
         const rulesBtn = document.createElement('button');
         rulesBtn.id = 'btn-rules-floating';
         rulesBtn.innerText = '📜 规则说明';
-        rulesBtn.style.cssText = "position:absolute; top:20px; left:20px; z-index:50; background:#8C7A6B; color:white; padding:8px 15px; font-size:16px; border:none; border-radius:4px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);";
+        rulesBtn.style.cssText = "position:fixed; top:20px; left:20px; z-index:50; background:#8C7A6B; color:white; padding:8px 15px; font-size:16px; border:none; border-radius:4px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);";
         document.body.appendChild(rulesBtn);
         rulesBtn.addEventListener('click', () => { AudioEngine.play('click'); Renderer.renderRules(); });
+    }
+
+    if (!document.getElementById('btn-fullscreen')) {
+        const fsBtn = document.createElement('button');
+        fsBtn.id = 'btn-fullscreen';
+        fsBtn.innerText = '⛶ 全屏';
+        fsBtn.style.cssText = "position:fixed; top:20px; right:20px; z-index:50; background:#5D4037; color:white; padding:8px 15px; font-size:16px; border:none; border-radius:4px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);";
+        document.body.appendChild(fsBtn);
+        fsBtn.addEventListener('click', () => {
+            AudioEngine.play('click');
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+                fsBtn.innerText = '✕ 退出全屏';
+            } else {
+                document.exitFullscreen();
+                fsBtn.innerText = '⛶ 全屏';
+            }
+        });
+        document.addEventListener('fullscreenchange', () => {
+            fsBtn.innerText = document.fullscreenElement ? '✕ 退出全屏' : '⛶ 全屏';
+        });
     }
 
     DOM.hand.addEventListener('click', (e) => {
