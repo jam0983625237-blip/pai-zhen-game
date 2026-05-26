@@ -83,22 +83,6 @@ const Renderer = {
 
     renderHand() {
         DOM.hand.innerHTML = '';
-        const count = state.hand.length;
-        if (count === 0) return;
-
-        // 斗地主式握牌：底部紧密重叠，每张只露左边缘
-        const isMobile = window.innerWidth <= 768;
-        const cardW = isMobile ? 60 : 110;
-        const visiblePerCard = isMobile ? 14 : 18; // 每张牌露出的宽度（仅左边缘花色+数字）
-
-        // 扇形弧度 — 很轻微
-        const arcTotal = Math.min(count * 2, 15);
-        const startAngle = -arcTotal / 2;
-
-        // 整副手牌总宽度
-        const totalWidth = cardW + (count - 1) * visiblePerCard;
-        const startX = -totalWidth / 2;
-
         state.hand.forEach((card, index) => {
             const cardEl = document.createElement('div');
             cardEl.className = 'playing-card';
@@ -106,17 +90,6 @@ const Renderer = {
 
             if (state.selectedCardIds.includes(card.id)) cardEl.classList.add('selected');
             if (state.currentBoss === '阎罗王' && index < 3) cardEl.classList.add('is-back');
-
-            // 角度
-            const t = (count > 1) ? index / (count - 1) : 0.5;
-            const angle = startAngle + t * arcTotal;
-
-            // 水平位置：从 startX 起，每张偏移 visiblePerCard
-            const xPos = startX + index * visiblePerCard;
-
-            cardEl.style.transform = `translateX(${xPos}px) rotate(${angle}deg)`;
-            cardEl.style.transformOrigin = 'bottom center';
-            cardEl.style.zIndex = index;
 
             const isRed = (card.suit === 1 || card.suit === 3);
             const colorClass = isRed ? 'ink-red' : 'ink-black';

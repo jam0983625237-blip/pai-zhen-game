@@ -117,11 +117,13 @@ body {
 
 #hand-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 20px 10px 10px 10px;
-    min-height: 200px;
-    position: relative;
+    gap: 8px;
+    padding: 10px;
+    max-width: 500px; /* 4张牌 + 间距 = ~500px */
+    margin: 0 auto;
 }
 
 #action-bar {
@@ -148,30 +150,26 @@ body {
     padding: 10px;
     box-sizing: border-box;
     flex-shrink: 0;
-    will-change: transform;
-    transform-origin: bottom center;
 }
 .playing-card::after {
     content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
     border: 1px dashed rgba(212, 175, 55, 0.4); border-radius: 4px; pointer-events: none;
 }
 
-/* 悬停：弹起 + 扶正 */
+/* 悬停：弹起 */
 .playing-card:hover {
-    transform: translateY(-25px) rotate(0deg) !important;
-    transform-origin: bottom center;
+    transform: translateY(-15px);
     box-shadow: 2px 20px 40px rgba(0,0,0,0.2);
-    z-index: 100 !important;
+    z-index: 100;
 }
 
-/* 选中：更高 + 金框 + 扶正 */
+/* 选中：更高 + 金框 */
 .playing-card.selected {
     border-color: #D4AF37;
     border-width: 3px;
     box-shadow: 0 0 0 3px #D4AF37, 0 20px 45px rgba(212,175,55,0.4);
-    transform: translateY(-35px) rotate(0deg) !important;
-    transform-origin: bottom center;
-    z-index: 200 !important;
+    transform: translateY(-25px);
+    z-index: 200;
 }
 
 .playing-card.is-back {
@@ -488,12 +486,11 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
         justify-content: space-between;
     }
 
-    /* 手牌：扇形堆叠 + 横向滚动兜底 */
+    /* 手牌：两排布局，每排4张 */
     #hand-container {
-        padding: 15px 5px 5px 5px;
-        min-height: 120px;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        padding: 5px;
+        gap: 4px;
+        max-width: 270px; /* 4 × 60 + 间距 */
     }
 
     .playing-card {
@@ -504,10 +501,10 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
         flex-shrink: 0;
     }
     .playing-card.selected {
-        transform: translateY(-18px) rotate(0deg) !important;
+        transform: translateY(-12px);
     }
     .playing-card:hover {
-        transform: translateY(-12px) rotate(0deg) !important;
+        transform: translateY(-8px);
     }
     .card-top, .card-bottom {
         font-size: 10px;
