@@ -144,6 +144,7 @@ body {
     box-sizing: border-box;
     flex-shrink: 0;
     will-change: transform;
+    transform-origin: bottom center;
 }
 .playing-card::after {
     content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
@@ -153,6 +154,7 @@ body {
 /* 悬停：弹起 + 扶正 */
 .playing-card:hover {
     transform: translateY(-25px) rotate(0deg) !important;
+    transform-origin: bottom center;
     box-shadow: 2px 20px 40px rgba(0,0,0,0.2);
     z-index: 100 !important;
 }
@@ -163,6 +165,7 @@ body {
     border-width: 3px;
     box-shadow: 0 0 0 3px #D4AF37, 0 20px 45px rgba(212,175,55,0.4);
     transform: translateY(-35px) rotate(0deg) !important;
+    transform-origin: bottom center;
     z-index: 200 !important;
 }
 

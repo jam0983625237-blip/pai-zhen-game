@@ -55,7 +55,7 @@ function bindEvents() {
         const rulesBtn = document.createElement('button');
         rulesBtn.id = 'btn-rules-floating';
         rulesBtn.innerText = '📜 规则说明';
-        rulesBtn.style.cssText = "position:fixed; top:12px; left:12px; z-index:99999; background:rgba(140,122,107,0.7); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); color:white; padding:8px 14px; font-size:14px; border:1px solid rgba(255,255,255,0.3); border-radius:4px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.15); transition:background 0.2s;";
+        rulesBtn.style.cssText = "position:fixed; bottom:20px; left:20px; z-index:99999; background:rgba(140,122,107,0.7); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); color:white; padding:8px 14px; font-size:14px; border:1px solid rgba(255,255,255,0.3); border-radius:4px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.15); transition:background 0.2s;";
         document.body.appendChild(rulesBtn);
         rulesBtn.addEventListener('click', () => { AudioEngine.play('click'); Renderer.renderRules(); });
     }

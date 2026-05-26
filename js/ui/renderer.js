@@ -86,13 +86,10 @@ const Renderer = {
         const count = state.hand.length;
         if (count === 0) return;
 
-        // 扇形展开：根据屏幕宽度动态计算间距
+        // 真扇形：底部为轴心旋转，底部聚拢顶部散开
         const isMobile = window.innerWidth <= 768;
-        const cardW = isMobile ? 60 : 110;
-        const perCardVisible = isMobile ? 38 : 64; // 每张牌露出的宽度
-        const totalSpread = (count - 1) * perCardVisible; // 第一张到最末张的总跨度
-        const totalWidth = cardW + totalSpread; // 整副手牌占用宽度
-        const startX = -totalWidth / 2;
+        const arcTotal = Math.min(count * 6, 40); // 总弧度，最多40度
+        const startAngle = -arcTotal / 2;
 
         state.hand.forEach((card, index) => {
             const cardEl = document.createElement('div');
@@ -102,14 +99,17 @@ const Renderer = {
             if (state.selectedCardIds.includes(card.id)) cardEl.classList.add('selected');
             if (state.currentBoss === '阎罗王' && index < 3) cardEl.classList.add('is-back');
 
-            // 每张牌从左侧起依次偏移
-            const xOffset = startX + index * perCardVisible;
-            // 旋转：中间平直，两边微倾
-            const t = (count > 1) ? (index / (count - 1)) - 0.5 : 0;
-            const rotation = t * Math.min(count * 2, 10);
+            // 旋转：底部为轴，均匀分布弧度
+            const t = (count > 1) ? index / (count - 1) : 0.5;
+            const angle = startAngle + t * arcTotal;
 
-            cardEl.style.transform = `translateX(${xOffset}px) rotate(${rotation}deg)`;
-            cardEl.style.zIndex = index; // 越后面越上层
+            // 重叠偏移：让牌在底部轻微水平错开
+            const overlapPx = isMobile ? 12 : 18;
+            const xShift = (index - (count - 1) / 2) * overlapPx;
+
+            cardEl.style.transform = `rotate(${angle}deg) translateX(${xShift}px)`;
+            cardEl.style.transformOrigin = 'bottom center';
+            cardEl.style.zIndex = index;
 
             const isRed = (card.suit === 1 || card.suit === 3);
             const colorClass = isRed ? 'ink-red' : 'ink-black';
