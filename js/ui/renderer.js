@@ -89,10 +89,10 @@ const Renderer = {
         // 斗地主式握牌：底部紧密重叠，每张只露左边缘
         const isMobile = window.innerWidth <= 768;
         const cardW = isMobile ? 60 : 110;
-        const visiblePerCard = isMobile ? 20 : 26; // 每张牌露出的宽度（仅左边缘花色+数字）
+        const visiblePerCard = isMobile ? 14 : 18; // 每张牌露出的宽度（仅左边缘花色+数字）
 
-        // 扇形弧度
-        const arcTotal = Math.min(count * 4, 30);
+        // 扇形弧度 — 很轻微
+        const arcTotal = Math.min(count * 2, 15);
         const startAngle = -arcTotal / 2;
 
         // 整副手牌总宽度
