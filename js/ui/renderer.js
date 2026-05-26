@@ -92,6 +92,7 @@ if (!document.getElementById('xianxia-theme')) {
             border-color: #B8860B; 
             box-shadow: 0 0 0 2px #D4AF37, 0 15px 35px rgba(212,175,55,0.25); 
             transform: translateY(-20px) scale(1.03); 
+            z-index: 10;
         }
 
         .playing-card.is-back {
@@ -118,7 +119,6 @@ if (!document.getElementById('xianxia-theme')) {
         
         .shop-items { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin: 25px 0; align-items: stretch; }
         
-        /* 统一坊市商品卡片 */
         .shop-item-card { 
             background: #FDFCF7; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.06); 
             padding: 18px; box-sizing: border-box;
@@ -166,24 +166,26 @@ if (!document.getElementById('xianxia-theme')) {
         button:active { transform: scale(0.98); }
 
         /* ------------------------------------------ */
-        /* ✨✨✨ 终极优雅：智能手机端重构布局 (方案B: 双排矩阵) ✨✨✨ */
+        /* ✨✨✨ 终极防爆：强力移动端底层干涉 (方案B) ✨✨✨ */
         /* ------------------------------------------ */
         @media screen and (max-width: 768px) {
+            /* 1. 强制重塑 Body 流，掌控全局秩序 */
             body { 
                 display: flex !important; 
                 flex-direction: column !important; 
                 padding: 10px !important; 
-                padding-bottom: 90px !important; /* 给底部毛玻璃悬浮台留空间 */
+                padding-bottom: 80px !important; /* 给底部按钮留足空间 */
                 box-sizing: border-box !important;
                 height: 100vh !important;
                 overflow-x: hidden !important;
+                overflow-y: auto !important;
             }
 
-            /* ✨ 规则按钮横幅化：绝对置顶，不再遮挡分数 */
+            /* 2. 强行拽回乱飞的“规则按钮”，降维成顶部横幅 */
             #btn-rules-floating {
-                order: -1 !important; 
+                order: 1 !important; /* 强制排在第一位 */
                 position: relative !important; 
-                top: auto !important; left: auto !important;
+                top: 0 !important; left: 0 !important;
                 width: 100% !important;
                 margin: 0 0 10px 0 !important;
                 background: rgba(255, 255, 255, 0.4) !important;
@@ -197,8 +199,9 @@ if (!document.getElementById('xianxia-theme')) {
                 letter-spacing: 2px !important;
             }
 
-            /* ✨ HUD 顶栏优化为换行流式布局 */
-            #hud-top { 
+            /* 3. 强力挂载状态栏 (识别内部特有元素，给父级强加样式) */
+            .mobile-hud { 
+                order: 2 !important; /* 排在第二位 */
                 display: flex !important;
                 flex-wrap: wrap !important;
                 gap: 8px !important;
@@ -208,17 +211,21 @@ if (!document.getElementById('xianxia-theme')) {
                 padding: 10px 12px !important;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
                 margin-bottom: 15px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
-            #hud-top div { 
+            .mobile-hud > * { 
                 flex: 1 1 45% !important;
                 font-size: 13px !important;
                 margin: 0 !important;
                 text-align: left !important;
+                white-space: nowrap !important;
             }
             #money-display { font-size: 14px !important; color: #D4AF37 !important; font-weight: bold !important; text-align: right !important;}
 
-            /* ✨ 法宝栏：横向丝滑卷轴 */
+            /* 4. 法宝栏：横向丝滑卷轴 */
             #jokers { 
+                order: 3 !important; /* 排在第三位 */
                 display: flex !important; 
                 flex-wrap: nowrap !important; 
                 overflow-x: auto !important; 
@@ -231,57 +238,49 @@ if (!document.getElementById('xianxia-theme')) {
             #jokers::-webkit-scrollbar { display: none; }
             .joker-card { 
                 flex: 0 0 auto !important; 
-                width: 90px !important; 
-                min-height: 95px !important;
+                width: 85px !important; 
+                min-height: 90px !important;
             }
 
-            /* ✨✨ 方案B核心：手牌区 2行 x 4列 完美矩阵 ✨✨ */
+            /* ✨ 5. 方案B大核心：手牌区 4列 × 2行 完美矩阵 */
             #hand { 
+                order: 4 !important; /* 排在第四位 */
                 display: grid !important; 
-                grid-template-columns: repeat(4, 1fr) !important; /* 强制等分4列 */
-                gap: 8px !important; /* 行列间距 */
-                padding: 10px 0 !important;
-                margin-bottom: 0 !important; 
+                grid-template-columns: repeat(4, 1fr) !important; /* 强制平分 4 列 */
+                gap: 8px !important; /* 卡牌间距 */
+                padding: 5px !important;
+                margin: 0 0 10px 0 !important; 
                 width: 100% !important;
+                box-sizing: border-box !important;
             }
             .playing-card {
-                width: 100% !important; /* 宽度由 Grid 自动分配 */
-                min-width: 0 !important; /* 覆盖之前的限制 */
-                max-width: 100% !important;
+                width: 100% !important; /* 宽度交给 Grid 分配，填满格子 */
+                min-width: 0 !important; /* 打破电脑版的最小宽度限制 */
+                max-width: none !important;
                 aspect-ratio: 2.2 / 3.5 !important; 
                 padding: 4px !important;
+                margin: 0 !important; /* 消除默认外边距 */
             }
-            .playing-card.selected { transform: translateY(-12px) scale(1.05) !important; }
-            .card-center { font-size: 20px !important; }
-            .card-top, .card-bottom { font-size: 11px !important; }
+            .playing-card.selected { transform: translateY(-8px) scale(1.05) !important; }
+            .card-center { font-size: clamp(16px, 5vw, 24px) !important; }
+            .card-top, .card-bottom { font-size: clamp(10px, 3vw, 13px) !important; }
 
-            /* ✨ 底部控制台：原生 APP 级悬浮毛玻璃 */
-            #controls-bottom {
-                position: fixed !important;
-                bottom: 0 !important; 
-                left: 0 !important;
-                width: 100% !important;
-                background: rgba(234, 229, 217, 0.85) !important;
-                backdrop-filter: blur(12px) !important;
-                -webkit-backdrop-filter: blur(12px) !important;
-                padding: 15px 20px 25px 20px !important; 
-                box-sizing: border-box !important;
-                display: flex !important;
-                justify-content: space-between !important;
-                gap: 15px !important;
-                box-shadow: 0 -4px 20px rgba(0,0,0,0.06) !important;
-                z-index: 100 !important;
-                border-top: 1px solid rgba(255,255,255,0.4) !important;
-            }
+            /* ✨ 6. 底部控制台：暴力吸底固定，绝不乱跑 */
             #btn-play, #btn-discard {
-                flex: 1 !important; 
+                position: fixed !important;
+                bottom: 15px !important;
+                width: 42% !important;
                 padding: 12px 0 !important;
                 font-size: 16px !important;
+                font-weight: bold !important;
                 border-radius: 8px !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+                z-index: 9999 !important;
             }
+            #btn-play { left: 5% !important; }
+            #btn-discard { right: 5% !important; background-color: #8C7A6B !important; color: white !important;}
 
-            /* ✨ 坊市与规则面板双列适配 */
+            /* 7. 坊市双列适配 */
             .shop-panel { 
                 padding: 20px 15px !important; 
                 width: 92% !important; 
@@ -289,12 +288,12 @@ if (!document.getElementById('xianxia-theme')) {
                 overflow-y: auto !important; 
                 border-radius: 12px !important;
             }
-            .shop-panel h2 { font-size: 30px !important; }
+            .shop-panel h2 { font-size: 28px !important; }
             .shop-items { gap: 10px !important; }
             .shop-item-card, .sold-out { 
                 width: calc(50% - 5px) !important;
                 min-width: 0 !important;
-                padding: 12px 8px !important;
+                padding: 10px !important;
             }
             .shop-item-title { font-size: 14px !important; margin-bottom: 6px !important; }
             .shop-item-desc { font-size: 11px !important; line-height: 1.4 !important; }
@@ -329,6 +328,11 @@ const Renderer = {
         DOM.handsLeft.textContent = state.handsLeft;
         DOM.discardsLeft.textContent = state.discardsLeft;
         
+        // ✨ 强力干涉点：自动识别并框定你的状态栏，为它穿上手机端防爆马甲！
+        if (DOM.ante && DOM.ante.parentElement) {
+            DOM.ante.parentElement.classList.add('mobile-hud');
+        }
+
         if (state.currentBoss) {
             document.body.style.background = 'linear-gradient(135deg, #d3c4c4 0%, #b3a4a4 100%)'; 
         } else {
