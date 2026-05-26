@@ -1,0 +1,66 @@
+/* css/cards.css */
+#hand-container {
+    /* 改用 Flex 布局，告别绝对定位带来的重叠问题 */
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.playing-card {
+    position: relative; /* 【关键修复】：锁死内部元素的活动范围 */
+    width: 100px;
+    height: 140px;
+    background-color: white;
+    border: 2px solid #BCAAA4;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.playing-card.selected {
+    transform: translateY(-20px);
+    border-color: #D4A017;
+    border-width: 3px;
+    background-color: #FFF9C4;
+    box-shadow: 0 10px 15px rgba(212, 160, 23, 0.4);
+}
+
+/* 左上角的数字与花色（标准扑克样式） */
+.card-top {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+}
+
+/* 右下角倒置的数字与花色（标准扑克样式） */
+.card-bottom {
+    position: absolute;
+    bottom: 5px;
+    right: 6px;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    transform: rotate(180deg); /* 倒置 180 度 */
+}
+
+/* 中间的中文大写 */
+.card-center {
+    font-size: 42px;
+    font-family: 'KaiTi', 'STKaiti', serif;
+    font-weight: bold;
+}
