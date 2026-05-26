@@ -64,7 +64,7 @@ function bindEvents() {
         const fsBtn = document.createElement('button');
         fsBtn.id = 'btn-fullscreen';
         fsBtn.innerText = '⛶ 全屏';
-        fsBtn.style.cssText = "position:fixed; top:20px; right:20px; z-index:50; background:#5D4037; color:white; padding:8px 15px; font-size:16px; border:none; border-radius:4px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);";
+        fsBtn.style.cssText = "position:fixed; top:20px; right:20px; z-index:99999; background:#D4AF37; color:#5D4037; padding:10px 18px; font-size:18px; font-weight:bold; border:none; border-radius:6px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);";
         document.body.appendChild(fsBtn);
         fsBtn.addEventListener('click', () => {
             AudioEngine.play('click');
