@@ -86,9 +86,13 @@ const Renderer = {
         const count = state.hand.length;
         if (count === 0) return;
 
-        // 扇形展开：计算每张牌的位移和旋转
-        const totalSpread = Math.min(count * 55, 360); // 总展开宽度
-        const startX = -totalSpread / 2; // 从左侧开始偏移
+        // 扇形展开：根据屏幕宽度动态计算间距
+        const isMobile = window.innerWidth <= 768;
+        const cardW = isMobile ? 60 : 110;
+        const perCardVisible = isMobile ? 38 : 64; // 每张牌露出的宽度
+        const totalSpread = (count - 1) * perCardVisible; // 第一张到最末张的总跨度
+        const totalWidth = cardW + totalSpread; // 整副手牌占用宽度
+        const startX = -totalWidth / 2;
 
         state.hand.forEach((card, index) => {
             const cardEl = document.createElement('div');
@@ -98,11 +102,11 @@ const Renderer = {
             if (state.selectedCardIds.includes(card.id)) cardEl.classList.add('selected');
             if (state.currentBoss === '阎罗王' && index < 3) cardEl.classList.add('is-back');
 
-            // 扇形算法：均匀分布 + 轻微弧度旋转
-            const xOffset = startX + (index / Math.max(count - 1, 1)) * totalSpread;
-            // 旋转：中间牌平直，两边逐渐倾斜
-            const t = (index / Math.max(count - 1, 1)) - 0.5; // -0.5 ... +0.5
-            const rotation = t * Math.min(count * 2.5, 12); // 最多 ±12 度
+            // 每张牌从左侧起依次偏移
+            const xOffset = startX + index * perCardVisible;
+            // 旋转：中间平直，两边微倾
+            const t = (count > 1) ? (index / (count - 1)) - 0.5 : 0;
+            const rotation = t * Math.min(count * 2, 10);
 
             cardEl.style.transform = `translateX(${xOffset}px) rotate(${rotation}deg)`;
             cardEl.style.zIndex = index; // 越后面越上层
