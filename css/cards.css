@@ -64,3 +64,30 @@
     font-family: 'KaiTi', 'STKaiti', serif;
     font-weight: bold;
 }
+
+/* ================= 手机适配 ================= */
+@media screen and (max-width: 768px) {
+    #hand-container {
+        gap: 4px;
+        padding: 8px 5px;
+        margin-bottom: 80px;
+    }
+
+    .playing-card {
+        width: 60px;
+        height: 84px;
+        border-radius: 4px;
+    }
+
+    .playing-card.selected {
+        transform: translateY(-12px);
+    }
+
+    .card-top, .card-bottom {
+        font-size: 10px;
+    }
+
+    .card-center {
+        font-size: 20px;
+    }
+}
