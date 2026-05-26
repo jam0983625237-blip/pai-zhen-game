@@ -166,60 +166,58 @@ if (!document.getElementById('xianxia-theme')) {
         button:active { transform: scale(0.98); }
 
         /* ------------------------------------------ */
-        /* ✨✨✨ 终极优雅：智能手机端重构布局 ✨✨✨ */
+        /* ✨✨✨ 终极优雅：智能手机端重构布局 (方案B: 双排矩阵) ✨✨✨ */
         /* ------------------------------------------ */
         @media screen and (max-width: 768px) {
             body { 
                 display: flex !important; 
                 flex-direction: column !important; 
-                padding: 15px !important; 
-                padding-bottom: 100px !important; /* 给底部悬浮台留足空间 */
+                padding: 10px !important; 
+                padding-bottom: 90px !important; /* 给底部毛玻璃悬浮台留空间 */
                 box-sizing: border-box !important;
                 height: 100vh !important;
-                overflow-y: auto !important;
+                overflow-x: hidden !important;
             }
 
-            /* ✨ 1. 规则按钮优雅归位：利用 order 放到网页最顶部，变为精致横幅 */
+            /* ✨ 规则按钮横幅化：绝对置顶，不再遮挡分数 */
             #btn-rules-floating {
                 order: -1 !important; 
                 position: relative !important; 
                 top: auto !important; left: auto !important;
                 width: 100% !important;
-                margin: 0 0 15px 0 !important;
+                margin: 0 0 10px 0 !important;
                 background: rgba(255, 255, 255, 0.4) !important;
                 color: #5D4037 !important;
                 border: 1px solid rgba(216,211,197,0.8) !important;
                 border-radius: 8px !important;
-                padding: 10px !important;
+                padding: 8px !important;
                 box-shadow: none !important;
-                font-size: 15px !important;
+                font-size: 14px !important;
                 font-weight: bold !important;
                 letter-spacing: 2px !important;
             }
 
-            /* ✨ 2. HUD 顶栏重构为流式卡片，再也不挤压 */
+            /* ✨ HUD 顶栏优化为换行流式布局 */
             #hud-top { 
                 display: flex !important;
-                flex-direction: column !important;
+                flex-wrap: wrap !important;
                 gap: 8px !important;
                 background: rgba(255, 255, 255, 0.5) !important;
                 border: 1px solid rgba(255,255,255,0.6) !important;
                 border-radius: 8px !important;
-                padding: 12px 15px !important;
+                padding: 10px 12px !important;
                 box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
-                height: auto !important;
                 margin-bottom: 15px !important;
             }
             #hud-top div { 
-                display: flex !important; 
-                justify-content: space-between !important; 
-                width: 100% !important; 
-                font-size: 14px !important;
+                flex: 1 1 45% !important;
+                font-size: 13px !important;
                 margin: 0 !important;
+                text-align: left !important;
             }
-            #money-display { font-size: 16px !important; color: #D4AF37 !important; }
+            #money-display { font-size: 14px !important; color: #D4AF37 !important; font-weight: bold !important; text-align: right !important;}
 
-            /* ✨ 3. 法宝栏：横向丝滑卷轴 */
+            /* ✨ 法宝栏：横向丝滑卷轴 */
             #jokers { 
                 display: flex !important; 
                 flex-wrap: nowrap !important; 
@@ -230,34 +228,34 @@ if (!document.getElementById('xianxia-theme')) {
                 margin: 0 !important;
                 -webkit-overflow-scrolling: touch;
             }
-            #jokers::-webkit-scrollbar { display: none; } /* 隐藏丑陋滚动条 */
+            #jokers::-webkit-scrollbar { display: none; }
             .joker-card { 
                 flex: 0 0 auto !important; 
-                width: 95px !important; 
-                min-height: 100px !important;
+                width: 90px !important; 
+                min-height: 95px !important;
             }
 
-            /* ✨ 4. 手牌区：完美矩阵，超过5张自动优雅换行 */
+            /* ✨✨ 方案B核心：手牌区 2行 x 4列 完美矩阵 ✨✨ */
             #hand { 
-                display: flex !important; 
-                flex-wrap: wrap !important; 
-                justify-content: center !important; 
-                gap: 8px !important;
+                display: grid !important; 
+                grid-template-columns: repeat(4, 1fr) !important; /* 强制等分4列 */
+                gap: 8px !important; /* 行列间距 */
                 padding: 10px 0 !important;
                 margin-bottom: 0 !important; 
+                width: 100% !important;
             }
             .playing-card {
-                width: calc(20% - 8px) !important; /* 一行完美放下5张 */
-                min-width: 60px !important;
-                max-width: 75px !important;
+                width: 100% !important; /* 宽度由 Grid 自动分配 */
+                min-width: 0 !important; /* 覆盖之前的限制 */
+                max-width: 100% !important;
                 aspect-ratio: 2.2 / 3.5 !important; 
                 padding: 4px !important;
             }
-            .playing-card.selected { transform: translateY(-15px) scale(1.05) !important; }
-            .card-center { font-size: 22px !important; }
-            .card-top, .card-bottom { font-size: 12px !important; }
+            .playing-card.selected { transform: translateY(-12px) scale(1.05) !important; }
+            .card-center { font-size: 20px !important; }
+            .card-top, .card-bottom { font-size: 11px !important; }
 
-            /* ✨ 5. 底部控制台：原生 APP 级悬浮毛玻璃 */
+            /* ✨ 底部控制台：原生 APP 级悬浮毛玻璃 */
             #controls-bottom {
                 position: fixed !important;
                 bottom: 0 !important; 
@@ -269,22 +267,21 @@ if (!document.getElementById('xianxia-theme')) {
                 padding: 15px 20px 25px 20px !important; 
                 box-sizing: border-box !important;
                 display: flex !important;
-                justify-content: center !important;
+                justify-content: space-between !important;
                 gap: 15px !important;
                 box-shadow: 0 -4px 20px rgba(0,0,0,0.06) !important;
                 z-index: 100 !important;
                 border-top: 1px solid rgba(255,255,255,0.4) !important;
-                margin-top: 0 !important;
             }
             #btn-play, #btn-discard {
                 flex: 1 !important; 
                 padding: 12px 0 !important;
-                font-size: 18px !important;
+                font-size: 16px !important;
                 border-radius: 8px !important;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
             }
 
-            /* ✨ 6. 坊市与规则面板双列适配 */
+            /* ✨ 坊市与规则面板双列适配 */
             .shop-panel { 
                 padding: 20px 15px !important; 
                 width: 92% !important; 
@@ -295,7 +292,7 @@ if (!document.getElementById('xianxia-theme')) {
             .shop-panel h2 { font-size: 30px !important; }
             .shop-items { gap: 10px !important; }
             .shop-item-card, .sold-out { 
-                width: calc(50% - 5px) !important; /* 双列排布 */
+                width: calc(50% - 5px) !important;
                 min-width: 0 !important;
                 padding: 12px 8px !important;
             }
@@ -304,7 +301,7 @@ if (!document.getElementById('xianxia-theme')) {
             
             table { font-size: 11px !important; }
             th, td { padding: 5px 3px !important; }
-            #btn-next-round { width: 100% !important; padding: 12px 0 !important; font-size: 18px !important; }
+            #btn-next-round { width: 100% !important; padding: 12px 0 !important; font-size: 16px !important; }
         }
         
         @keyframes floatUpAndFade {
