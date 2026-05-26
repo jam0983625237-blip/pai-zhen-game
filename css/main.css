@@ -1,8 +1,8 @@
 /* css/main.css */
 :root {
-    --bg-color: #F5F0E8; /* 宣纸白 */
-    --ink-color: #2C2C2C; /* 墨黑 */
-    --primary-btn: #8B4513; /* 赭石/木头色 */
+    --bg-color: #F5F0E8;
+    --ink-color: #2C2C2C;
+    --primary-btn: #8B4513;
 }
 
 * {
@@ -13,7 +13,7 @@
 
 body {
     background-color: #1a1a1a;
-    font-family: 'KaiTi', 'STKaiti', serif; /* 楷体更契合国风 */
+    font-family: 'KaiTi', 'STKaiti', serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,30 +29,10 @@ body {
     background-color: var(--bg-color);
     box-shadow: 0 0 20px rgba(0,0,0,0.8);
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-/* 控制台（出牌/弃牌按钮区） */
-#action-bar {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 20px;
     font-family: inherit;
-    font-weight: bold;
-    color: white;
-    background-color: var(--primary-btn);
-    border: 2px solid #5D4037;
-    border-radius: 8px;
     cursor: pointer;
     transition: transform 0.1s;
 }
@@ -60,100 +40,30 @@ button {
 button:active {
     transform: scale(0.95);
 }
-/* ================= 新增 HUD 与法宝样式 ================= */
-#hud-container {
-    padding: 15px 25px;
-    background-color: rgba(93, 64, 55, 0.1);
-    border-bottom: 2px solid #E8DCC8;
-}
 
-.hud-top {
-    display: flex;
-    justify-content: space-between;
-    font-size: 24px;
-    font-weight: bold;
-    color: var(--ink-color);
-    margin-bottom: 8px;
-}
-
-.hud-middle {
-    font-size: 18px;
-    color: #6B5E53;
-}
-
-/* 强调当前分数 */
-#current-score {
-    color: #D4380D;
-    font-size: 28px;
-}
-
-/* 法宝槽位容器 */
-#joker-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 30px;
-    min-height: 140px; 
-}
-
-/* 单个法宝卡牌样式 */
-.joker-card {
-    width: 90px;
-    height: 126px;
-    background-color: #FFFDE7;
-    border: 2px dashed #BCAAA4;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    text-align: center;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-}
-
-.joker-name { 
-    font-weight: bold; 
-    font-size: 18px; 
-    margin-bottom: 5px; 
-    color: var(--ink-color);
-}
-
-.joker-desc { 
-    font-size: 12px; 
-    color: #6B5E53; 
-}
 /* ================= 坊市与结算弹窗样式 ================= */
 .hidden { display: none !important; }
 
-#overlay-container {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85); /* 半透明黑底 */
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 .shop-panel {
-    background: #E8DCC8;
-    border: 4px solid #5D4037;
+    background: rgba(250,249,246,0.99);
+    border: 1px solid #D8D3C5;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     border-radius: 12px;
     padding: 30px;
     text-align: center;
     color: var(--ink-color);
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    width: 95%;
+    max-width: 1000px;
+    box-sizing: border-box;
 }
 
 .shop-items {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
     margin: 25px 0;
+    align-items: stretch;
 }
 
 .shop-item {
@@ -167,83 +77,59 @@ button:active {
     box-shadow: 0 5px 15px rgba(212, 160, 23, 0.4);
 }
 
+.shop-item-card {
+    background: #FDFCF7;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+    padding: 18px;
+    box-sizing: border-box;
+    width: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+.shop-item-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+
+.shop-item-tarot {
+    background: linear-gradient(135deg, #281534 0%, #190A20 100%);
+    border: 2px solid #D4AF37;
+    color: #EEE;
+    box-shadow: 0 0 15px rgba(212,175,55,0.2);
+}
+.shop-item-tarot .shop-item-title {
+    background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 50%, #AA771C 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-family: 'Ma Shan Zheng', cursive; font-size: 18px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+}
+.shop-item-tarot .shop-item-desc { color: #CCC; }
+.shop-item-tarot .shop-item-price { color: #D4AF37; border-top-color: rgba(212,175,55,0.2); }
+
+.shop-item-upgrade {
+    background: #FAF5E9;
+    border: 2px solid #A63C3C;
+    box-shadow: 0 0 10px rgba(166,60,60,0.1);
+}
+.shop-item-upgrade .shop-item-title { color: #A63C3C; font-family: 'Ma Shan Zheng', cursive; font-size: 18px; }
+.shop-item-upgrade .shop-item-price { color: #A63C3C; border-top-color: rgba(166,60,60,0.1); }
+
+.shop-item-title { font-weight:bold; font-size:16px; margin-bottom:10px; text-align:center; line-height:1.3; }
+.shop-item-desc { color: #555; font-size: 13px; line-height: 1.5; text-align:left; flex-grow: 1; }
+.shop-item-tag { margin-top: auto; padding-top: 8px; font-size: 11px; font-weight: bold; text-align:center; }
+.shop-item-price { margin-top: 10px; color: #8C7A6B; font-weight: bold; font-size: 16px; text-align:center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; }
+
 .sold-out {
     opacity: 0.4;
     pointer-events: none;
     border-color: #999;
-}
-
-/* ================= 手机端全局适配 ================= */
-@media screen and (max-width: 768px) {
-    body {
-        height: 100dvh;
-    }
-
-    #game-container {
-        max-width: 100%;
-        width: 100vw;
-        border-radius: 0;
-    }
-
-    #hud-container {
-        padding: 8px 12px;
-    }
-
-    .hud-top {
-        font-size: 14px;
-        flex-wrap: wrap;
-        gap: 4px;
-    }
-
-    .hud-middle {
-        font-size: 12px;
-    }
-
-    #current-score {
-        font-size: 18px;
-    }
-
-    #joker-container {
-        gap: 6px;
-        margin-top: 8px;
-        min-height: auto;
-    }
-
-    .joker-card {
-        width: 70px;
-        height: auto;
-        padding: 6px 4px;
-    }
-
-    .joker-name {
-        font-size: 12px;
-        margin-bottom: 2px;
-    }
-
-    .joker-desc {
-        font-size: 9px;
-    }
-
-    /* 按钮区横排，贴底 */
-    #action-bar {
-        bottom: 8px;
-        right: 8px;
-        flex-direction: row;
-        gap: 8px;
-    }
-
-    #action-bar button {
-        padding: 10px 18px;
-        font-size: 16px;
-    }
-
-    /* 弹窗全宽 */
-    .shop-panel {
-        width: 95%;
-        padding: 15px;
-    }
-
-    .shop-items {
-        gap: 10px;
-    }
+    background:#EBEBEB;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width: 170px;
+    border-radius: 8px;
+    min-height: 180px;
 }

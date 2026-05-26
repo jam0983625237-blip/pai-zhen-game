@@ -1,17 +1,17 @@
-/* css/cards.css */
+/* css/cards.css - 基础卡牌样式，手机适配 */
+
 #hand-container {
-    /* 改用 Flex 布局，告别绝对定位带来的重叠问题 */
     display: flex;
     justify-content: center;
-    gap: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
+    gap: 12px;
+    padding: 10px;
+    flex-wrap: wrap;
 }
 
 .playing-card {
-    position: relative; /* 【关键修复】：锁死内部元素的活动范围 */
-    width: 100px;
-    height: 140px;
+    position: relative;
+    width: 110px;
+    height: 160px;
     background-color: white;
     border: 2px solid #BCAAA4;
     border-radius: 8px;
@@ -23,71 +23,131 @@
     user-select: none;
     box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
     transition: transform 0.2s, border-color 0.2s;
+    flex-shrink: 0;
 }
 
 .playing-card.selected {
-    transform: translateY(-20px);
+    transform: translateY(-25px);
     border-color: #D4A017;
     border-width: 3px;
     background-color: #FFF9C4;
     box-shadow: 0 10px 15px rgba(212, 160, 23, 0.4);
 }
 
-/* 左上角的数字与花色（标准扑克样式） */
 .card-top {
     position: absolute;
     top: 5px;
     left: 6px;
-    font-size: 20px;
+    font-size: 16px;
     font-family: Arial, sans-serif;
     font-weight: bold;
     line-height: 1;
     text-align: center;
 }
 
-/* 右下角倒置的数字与花色（标准扑克样式） */
 .card-bottom {
     position: absolute;
     bottom: 5px;
     right: 6px;
-    font-size: 20px;
+    font-size: 16px;
     font-family: Arial, sans-serif;
     font-weight: bold;
     line-height: 1;
     text-align: center;
-    transform: rotate(180deg); /* 倒置 180 度 */
+    transform: rotate(180deg);
 }
 
-/* 中间的中文大写 */
 .card-center {
-    font-size: 42px;
+    font-size: 38px;
     font-family: 'KaiTi', 'STKaiti', serif;
     font-weight: bold;
 }
 
 /* ================= 手机适配 ================= */
 @media screen and (max-width: 768px) {
+    body {
+        display: flex !important;
+        flex-direction: column;
+        padding: 4px !important;
+        gap: 8px !important;
+        height: 100dvh;
+    }
+
+    #game-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
+        width: 100vw;
+    }
+
+    #left-panel {
+        flex-direction: row;
+        gap: 8px;
+        overflow-x: auto;
+        flex-shrink: 0;
+    }
+
+    #hud-box {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+    .hud-row { border-bottom: none; padding-bottom: 0; font-size: 12px; }
+    #info-ante { font-size: 14px; }
+
+    #joker-container {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        overflow-x: auto;
+    }
+    .joker-card { min-width: 80px; min-height: auto; padding: 8px; }
+    .joker-card { font-size: 10px; }
+
+    #right-panel {
+        flex: 1;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
     #hand-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
         gap: 4px;
-        padding: 8px 5px;
-        margin-bottom: 80px;
+        padding: 5px;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
     }
 
     .playing-card {
-        width: 60px;
+        width: 58px;
         height: 84px;
+        padding: 3px;
         border-radius: 4px;
     }
 
     .playing-card.selected {
-        transform: translateY(-12px);
+        transform: translateY(-10px);
     }
 
     .card-top, .card-bottom {
-        font-size: 10px;
+        font-size: 9px;
     }
 
     .card-center {
-        font-size: 20px;
+        font-size: 18px;
+    }
+
+    #action-bar {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    #btn-play, #btn-discard {
+        width: 120px;
+        height: 42px;
+        font-size: 16px;
     }
 }
