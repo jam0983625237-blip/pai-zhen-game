@@ -44,13 +44,6 @@ const AudioEngine = {
 };
 
 if (!document.getElementById('xianxia-theme')) {
-    if (!document.querySelector('meta[name="viewport"]')) {
-        const meta = document.createElement('meta');
-        meta.name = "viewport";
-        meta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover";
-        document.head.appendChild(meta);
-    }
-
     const style = document.createElement('style');
     style.id = 'xianxia-theme';
     style.innerHTML = `
@@ -59,12 +52,8 @@ if (!document.getElementById('xianxia-theme')) {
             color: #4A4A4A; 
             font-family: 'Noto Serif SC', serif; 
             transition: background 0.5s ease;
-            margin: 0; padding: 15px;
-            box-sizing: border-box;
-            min-height: 100vh;
         }
         
-        /* 基础手牌：宣纸底色 + 高级修长比例 */
         .playing-card { 
             background: #FAF9F6; 
             border: 1px solid #D8D3C5; 
@@ -74,10 +63,8 @@ if (!document.getElementById('xianxia-theme')) {
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            aspect-ratio: 2.2 / 3.5; 
-            min-width: 90px;
-            max-width: 110px;
-            flex: 1;
+            aspect-ratio: 2.5 / 3.5; 
+            min-width: 95px;
             display: flex; flex-direction: column; justify-content: space-between;
             padding: 8px; box-sizing: border-box;
         }
@@ -91,8 +78,7 @@ if (!document.getElementById('xianxia-theme')) {
         .playing-card.selected { 
             border-color: #B8860B; 
             box-shadow: 0 0 0 2px #D4AF37, 0 15px 35px rgba(212,175,55,0.25); 
-            transform: translateY(-20px) scale(1.03); 
-            z-index: 10;
+            transform: translateY(-25px) scale(1.03); 
         }
 
         .playing-card.is-back {
@@ -105,32 +91,31 @@ if (!document.getElementById('xianxia-theme')) {
         .ink-black { color: #1A1A1A; text-shadow: 0px 0px 2px rgba(0,0,0,0.3); z-index: 1; } 
         .ink-red { color: #A63C3C; text-shadow: 0px 0px 2px rgba(166,60,60,0.3); z-index: 1; } 
         
-        .card-top { align-self: flex-start; text-align: left; line-height: 1.1; font-weight: bold; font-size: 15px;}
-        .card-center { font-size: 34px; z-index: 1; text-align: center; } 
-        .card-bottom { align-self: flex-end; text-align: right; line-height: 1.1; font-weight: bold; transform: rotate(180deg); font-size: 15px;}
+        .card-top { align-self: flex-start; text-align: left; line-height: 1.1; font-weight: bold; font-size: 16px;}
+        .card-center { font-size: 38px; z-index: 1; text-align: center; } 
+        .card-bottom { align-self: flex-end; text-align: right; line-height: 1.1; font-weight: bold; transform: rotate(180deg); font-size: 16px;}
 
-        /* 坊市整体面板布局 */
         .shop-panel { 
             background: rgba(250,249,246,0.99); border: 1px solid #D8D3C5; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2); border-radius: 12px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2); border-radius: 8px; 
             width: 95%; max-width: 1000px; 
-            box-sizing: border-box;
         }
         
-        .shop-items { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin: 25px 0; align-items: stretch; }
+        .shop-items { display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin: 35px 0; align-items: stretch; }
         
         .shop-item-card { 
             background: #FDFCF7; border-radius: 8px; box-shadow: 0 6px 15px rgba(0,0,0,0.06); 
-            padding: 18px; box-sizing: border-box;
-            width: 170px; 
+            padding: 20px; box-sizing: border-box;
+            width: 175px; 
             display: flex; flex-direction: column; justify-content: flex-start;
             transition: all 0.2s ease; cursor: pointer; position: relative;
         }
-        .shop-item-card:hover { transform: translateY(-5px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .shop-item-card:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
 
         .shop-item-tarot {
             background: linear-gradient(135deg, #281534 0%, #190A20 100%);
-            border: 2px solid #D4AF37; color: #EEE;
+            border: 2px solid #D4AF37;
+            color: #EEE;
             box-shadow: 0 0 15px rgba(212,175,55,0.2);
         }
         .shop-item-tarot .shop-item-title {
@@ -142,7 +127,8 @@ if (!document.getElementById('xianxia-theme')) {
         .shop-item-tarot .shop-item-price { color: #D4AF37 !important; border-top-color: rgba(212,175,55,0.2) !important; }
 
         .shop-item-upgrade {
-            background: #FAF5E9; border: 2px solid #A63C3C; 
+            background: #FAF5E9; 
+            border: 2px solid #A63C3C; 
             box-shadow: 0 0 10px rgba(166,60,60,0.1);
         }
         .shop-item-upgrade::after { 
@@ -153,155 +139,17 @@ if (!document.getElementById('xianxia-theme')) {
         .shop-item-upgrade .shop-item-title { color: #A63C3C; font-family: 'Ma Shan Zheng', cursive; font-size: 18px; }
         .shop-item-upgrade .shop-item-price { color: #A63C3C !important; border-top-color: rgba(166,60,60,0.1) !important; }
 
-        .joker-card { border: 1px solid #D1CCC0; padding: 12px; width: 125px; display: flex; flex-direction: column; text-align:center; box-sizing: border-box; border-radius:6px; }
-        .sold-out { background:#EBEBEB; border-color:#EBEBEB; display:flex; justify-content:center; align-items:center; width: 170px; border-radius: 8px; min-height: 180px;}
+        .joker-card { border: 1px solid #D1CCC0; padding: 15px; width: 130px; display: flex; flex-direction: column; text-align:center; box-sizing: border-box; border-radius:4px; }
+        .sold-out { background:#EBEBEB; border-color:#EBEBEB; display:flex; justify-content:center; align-items:center; width: 175px; border-radius: 8px; }
 
-        .shop-item-title { font-weight:bold; font-size:16px; margin-bottom:10px; text-align:center; line-height:1.3; }
-        .shop-item-desc { color: #555; font-size: 13px; line-height: 1.5; text-align:left; flex-grow: 1; }
-        .shop-item-tag { margin-top: auto; padding-top: 8px; font-size: 11px; font-weight: bold; text-align:center; }
-        .shop-item-price { margin-top: 10px; color: #8C7A6B; font-weight: bold; font-size: 16px; text-align:center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; }
+        .shop-item-title { font-weight:bold; font-size:16px; margin-bottom:12px; text-align:center; line-height:1.3; }
+        .shop-item-desc { color: #555; font-size: 13px; line-height: 1.6; text-align:left; flex-grow: 1; }
+        .shop-item-tag { margin-top: auto; padding-top: 10px; font-size: 11px; font-weight: bold; text-align:center; }
+        .shop-item-price { margin-top: 12px; color: #8C7A6B; font-weight: bold; font-size: 16px; text-align:center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 10px; }
 
         button { font-family: 'Noto Serif SC', serif; transition: all 0.2s ease; cursor: pointer; outline: none; }
         button:hover { filter: brightness(1.1); transform: scale(1.02); }
         button:active { transform: scale(0.98); }
-
-        /* ------------------------------------------ */
-        /* ✨✨✨ 终极防爆：强力移动端底层干涉 (方案B) ✨✨✨ */
-        /* ------------------------------------------ */
-        @media screen and (max-width: 768px) {
-            /* 1. 强制重塑 Body 流，掌控全局秩序 */
-            body { 
-                display: flex !important; 
-                flex-direction: column !important; 
-                padding: 10px !important; 
-                padding-bottom: 80px !important; /* 给底部按钮留足空间 */
-                box-sizing: border-box !important;
-                height: 100vh !important;
-                overflow-x: hidden !important;
-                overflow-y: auto !important;
-            }
-
-            /* 2. 强行拽回乱飞的“规则按钮”，降维成顶部横幅 */
-            #btn-rules-floating {
-                order: 1 !important; /* 强制排在第一位 */
-                position: relative !important; 
-                top: 0 !important; left: 0 !important;
-                width: 100% !important;
-                margin: 0 0 10px 0 !important;
-                background: rgba(255, 255, 255, 0.4) !important;
-                color: #5D4037 !important;
-                border: 1px solid rgba(216,211,197,0.8) !important;
-                border-radius: 8px !important;
-                padding: 8px !important;
-                box-shadow: none !important;
-                font-size: 14px !important;
-                font-weight: bold !important;
-                letter-spacing: 2px !important;
-            }
-
-            /* 3. 强力挂载状态栏 (识别内部特有元素，给父级强加样式) */
-            .mobile-hud { 
-                order: 2 !important; /* 排在第二位 */
-                display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 8px !important;
-                background: rgba(255, 255, 255, 0.5) !important;
-                border: 1px solid rgba(255,255,255,0.6) !important;
-                border-radius: 8px !important;
-                padding: 10px 12px !important;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
-                margin-bottom: 15px !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
-            }
-            .mobile-hud > * { 
-                flex: 1 1 45% !important;
-                font-size: 13px !important;
-                margin: 0 !important;
-                text-align: left !important;
-                white-space: nowrap !important;
-            }
-            #money-display { font-size: 14px !important; color: #D4AF37 !important; font-weight: bold !important; text-align: right !important;}
-
-            /* 4. 法宝栏：横向丝滑卷轴 */
-            #jokers { 
-                order: 3 !important; /* 排在第三位 */
-                display: flex !important; 
-                flex-wrap: nowrap !important; 
-                overflow-x: auto !important; 
-                justify-content: flex-start !important;
-                gap: 10px !important;
-                padding: 5px 0 15px 0 !important;
-                margin: 0 !important;
-                -webkit-overflow-scrolling: touch;
-            }
-            #jokers::-webkit-scrollbar { display: none; }
-            .joker-card { 
-                flex: 0 0 auto !important; 
-                width: 85px !important; 
-                min-height: 90px !important;
-            }
-
-            /* ✨ 5. 方案B大核心：手牌区 4列 × 2行 完美矩阵 */
-            #hand { 
-                order: 4 !important; /* 排在第四位 */
-                display: grid !important; 
-                grid-template-columns: repeat(4, 1fr) !important; /* 强制平分 4 列 */
-                gap: 8px !important; /* 卡牌间距 */
-                padding: 5px !important;
-                margin: 0 0 10px 0 !important; 
-                width: 100% !important;
-                box-sizing: border-box !important;
-            }
-            .playing-card {
-                width: 100% !important; /* 宽度交给 Grid 分配，填满格子 */
-                min-width: 0 !important; /* 打破电脑版的最小宽度限制 */
-                max-width: none !important;
-                aspect-ratio: 2.2 / 3.5 !important; 
-                padding: 4px !important;
-                margin: 0 !important; /* 消除默认外边距 */
-            }
-            .playing-card.selected { transform: translateY(-8px) scale(1.05) !important; }
-            .card-center { font-size: clamp(16px, 5vw, 24px) !important; }
-            .card-top, .card-bottom { font-size: clamp(10px, 3vw, 13px) !important; }
-
-            /* ✨ 6. 底部控制台：暴力吸底固定，绝不乱跑 */
-            #btn-play, #btn-discard {
-                position: fixed !important;
-                bottom: 15px !important;
-                width: 42% !important;
-                padding: 12px 0 !important;
-                font-size: 16px !important;
-                font-weight: bold !important;
-                border-radius: 8px !important;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
-                z-index: 9999 !important;
-            }
-            #btn-play { left: 5% !important; }
-            #btn-discard { right: 5% !important; background-color: #8C7A6B !important; color: white !important;}
-
-            /* 7. 坊市双列适配 */
-            .shop-panel { 
-                padding: 20px 15px !important; 
-                width: 92% !important; 
-                max-height: 88vh !important; 
-                overflow-y: auto !important; 
-                border-radius: 12px !important;
-            }
-            .shop-panel h2 { font-size: 28px !important; }
-            .shop-items { gap: 10px !important; }
-            .shop-item-card, .sold-out { 
-                width: calc(50% - 5px) !important;
-                min-width: 0 !important;
-                padding: 10px !important;
-            }
-            .shop-item-title { font-size: 14px !important; margin-bottom: 6px !important; }
-            .shop-item-desc { font-size: 11px !important; line-height: 1.4 !important; }
-            
-            table { font-size: 11px !important; }
-            th, td { padding: 5px 3px !important; }
-            #btn-next-round { width: 100% !important; padding: 12px 0 !important; font-size: 16px !important; }
-        }
         
         @keyframes floatUpAndFade {
             0% { opacity: 0; transform: translate(-50%, 0) scale(0.8); }
@@ -310,13 +158,52 @@ if (!document.getElementById('xianxia-theme')) {
             100% { opacity: 0; transform: translate(-50%, -80px) scale(0.9); }
         }
         .floating-score {
-            position: fixed; top: 35%; left: 50%; transform: translate(-50%, 0);
+            position: fixed; top: 40%; left: 50%; transform: translate(-50%, 0);
             z-index: 9999; pointer-events: none; text-align: center;
             animation: floatUpAndFade 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             text-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
+
+        /* 强制横屏逻辑 */
+        @media (orientation: portrait) {
+            #rotate-tip {
+                display: flex !important;
+            }
+        }
+        @media (orientation: landscape) {
+            #rotate-tip {
+                display: none !important;
+            }
+        }
     `;
     document.head.appendChild(style);
+}
+
+// 动态植入强制横屏提示 DIV
+if (!document.getElementById('rotate-tip')) {
+    const rotateTip = document.createElement('div');
+    rotateTip.id = 'rotate-tip';
+    rotateTip.style.cssText = `
+        display: none;
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: #EAE5D9;
+        z-index: 99999;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Noto Serif SC', serif;
+        color: #5D4037;
+        font-size: 22px;
+        gap: 20px;
+        text-align: center;
+    `;
+    rotateTip.innerHTML = `
+        <div style="font-size: 60px;">📱↔️</div>
+        <div>请横屏游玩</div>
+        <div style="font-size: 14px; color: #8C7A6B;">牌阵为横向布局设计</div>
+    `;
+    document.body.appendChild(rotateTip);
 }
 
 const Renderer = {
@@ -328,11 +215,6 @@ const Renderer = {
         DOM.handsLeft.textContent = state.handsLeft;
         DOM.discardsLeft.textContent = state.discardsLeft;
         
-        // ✨ 强力干涉点：自动识别并框定你的状态栏，为它穿上手机端防爆马甲！
-        if (DOM.ante && DOM.ante.parentElement) {
-            DOM.ante.parentElement.classList.add('mobile-hud');
-        }
-
         if (state.currentBoss) {
             document.body.style.background = 'linear-gradient(135deg, #d3c4c4 0%, #b3a4a4 100%)'; 
         } else {
@@ -345,7 +227,7 @@ const Renderer = {
         state.jokers.forEach(joker => {
             const jEl = document.createElement('div');
             jEl.className = 'joker-card';
-            jEl.innerHTML = `<div style="color:#5D4037; font-weight:bold; margin-bottom:6px; font-size:13px;">${joker.n}</div><div style="color:#666; font-size:11px; line-height:1.4;">${joker.e}</div>`;
+            jEl.innerHTML = `<div style="color:#5D4037; font-weight:bold; margin-bottom:5px; font-size:14px;">${joker.n}</div><div style="color:#666; font-size:11px; line-height:1.4;">${joker.e}</div>`;
             DOM.jokers.appendChild(jEl);
         });
         const emptySlots = state.jokerSlots - state.jokers.length;
@@ -354,7 +236,7 @@ const Renderer = {
             emptyEl.className = 'joker-card';
             emptyEl.style.backgroundColor = 'transparent';
             emptyEl.style.border = '1px dashed #D8D3C5';
-            emptyEl.innerHTML = `<div style="color:#A9A499; text-align:center; margin-top:auto; margin-bottom:auto; font-size:12px;">（法宝空位）</div>`;
+            emptyEl.innerHTML = `<div style="color:#A9A499; text-align:center; margin-top:15px; font-size:12px;">（法宝空位）</div>`;
             DOM.jokers.appendChild(emptyEl);
         }
     },
@@ -394,9 +276,9 @@ const Renderer = {
         const el = document.createElement('div');
         el.className = 'floating-score';
         el.innerHTML = `
-            <div style="font-size: 30px; font-weight: bold; color: #5D4037; letter-spacing: 2px; font-family:'Ma Shan Zheng', cursive;">【${typeName}】</div>
-            <div style="font-size: 22px; color: #7A695C; margin-top: 6px; font-family: monospace; font-weight:bold;">${chips} <span style="color:#A63C3C;">×</span> ${mult}</div>
-            <div style="font-size: 48px; font-weight: 900; color: #A63C3C; margin-top: 6px;">+ ${total}</div>
+            <div style="font-size: 36px; font-weight: bold; color: #5D4037; letter-spacing: 2px; font-family:'Ma Shan Zheng', cursive;">【${typeName}】</div>
+            <div style="font-size: 24px; color: #7A695C; margin-top: 8px; font-family: monospace; font-weight:bold;">${chips} <span style="color:#A63C3C;">×</span> ${mult}</div>
+            <div style="font-size: 56px; font-weight: 900; color: #A63C3C; margin-top: 8px;">+ ${total}</div>
         `;
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 1600);
@@ -416,11 +298,11 @@ const Renderer = {
                 
                 if (item.isTarot) {
                     cardClass = "shop-item-card shop-item-tarot";
-                    tag = "(一次性·符箓)";
+                    tag = "(一次性·炼化符箓)";
                     tagColor = "#D4AF37";
                 } else if (item.isUpgrade) {
                     cardClass = "shop-item-card shop-item-upgrade";
-                    tag = "(永久·秘籍)";
+                    tag = "(永久·功法秘籍)";
                     tagColor = "#A63C3C";
                 }
 
@@ -436,12 +318,12 @@ const Renderer = {
         });
 
         DOM.overlay.innerHTML = `
-            <div class="shop-panel" style="padding: 30px;">
-                <h2 style="color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 38px; border-bottom: 2px solid #D8D3C5; padding-bottom: 15px; text-align:center; margin:0;">🏮 坊 市 🏮</h2>
-                <p style="margin-top: 15px; color: #666; text-align:center; font-size: 16px;">渡劫成功。当前盘缠：<b style="color: #D4AF37; font-size: 20px;">💰 ${state.money} 两</b></p>
+            <div class="shop-panel" style="padding: 40px; box-sizing: border-box;">
+                <h2 style="color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 40px; border-bottom: 2px solid #D8D3C5; padding-bottom: 15px; text-align:center; margin:0;">🏮 坊 市 🏮</h2>
+                <p style="margin-top: 15px; color: #666; text-align:center; font-size: 16px;">渡劫成功。当前盘缠：<b style="color: #D4AF37; font-size: 22px;">💰 ${state.money} 两</b></p>
                 <div class="shop-items">${itemsHtml}</div>
-                <div style="text-align:center;">
-                    <button id="btn-next-round" style="background-color: #8C7A6B; padding: 14px 45px; font-size: 18px; color: white; border:none; border-radius:6px; box-shadow: 0 6px 15px rgba(140,122,107,0.3); font-weight:bold; letter-spacing: 2px;">踏入下一劫</button>
+                <div style="text-align:center; margin-top: 10px;">
+                    <button id="btn-next-round" style="background-color: #8C7A6B; padding: 15px 50px; font-size: 20px; color: white; border:none; border-radius:6px; box-shadow: 0 6px 15px rgba(140,122,107,0.3); font-weight:bold; letter-spacing: 2px;">踏入下一劫</button>
                 </div>
             </div>
         `;
@@ -450,45 +332,48 @@ const Renderer = {
     renderRules() {
         DOM.overlay.classList.remove('hidden');
         DOM.overlay.innerHTML = `
-            <div class="shop-panel" style="max-height: 88vh; overflow-y: auto; text-align: left; padding: 30px; width: 95%; max-width: 750px; color: #4A4A4A; margin: 0 auto;">
-                <h2 style="text-align: center; margin-bottom: 20px; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 34px;">📜 天道法则卷宗</h2>
-                <div style="line-height: 1.7; font-size: 15px;">
+            <div class="shop-panel" style="max-height: 85vh; overflow-y: auto; text-align: left; padding: 40px; width: 90%; max-width: 750px; color: #4A4A4A; margin: 0 auto;">
+                <h2 style="text-align: center; margin-bottom: 20px; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 36px;">📜 天道法则卷宗</h2>
+                <div style="line-height: 1.8; font-size: 15px;">
                     <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px;">一、 基础渡劫</h3>
-                    <p>在有限次数内使总分达标。公式：<br><b>单手得分 = (功法筹码 + 牌面值) × (功法倍率 + 法宝倍率)</b><br>
-                    <span style="color:#A63C3C; font-size:13px;">* 秘诀：选5张毫无关联的牌只算最大那张（高牌），可作为变相弃牌战术！</span></p>
+                    <p>在有限次数内，使总得分达到【目标分数】。计分公式：<br>
+                    <b>单手得分 = ( 功法基础筹码 + 有效牌面值 ) × ( 功法基础倍率 + 法宝倍率 )</b><br>
+                    <span style="color:#A63C3C; font-size:13px;">* 秘诀：选5张毫无关联的牌，系统仅计算最大那张牌的分数（高牌）。可作为“变相弃牌”战术！</span></p>
                     
-                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px; margin-top: 25px;">二、 坊市秘宝</h3>
-                    <ul style="padding-left: 18px; margin: 8px 0;">
-                        <li><b>🏮 法宝：</b>放入上方槽位，提供永久加成。</li>
-                        <li><b>🔯 符箓：</b>一次性消耗。可炼化牌库、永久扩充手牌。</li>
-                        <li><b>📖 秘籍：</b>一次性消耗。永久提升指定牌型的基础功法阶级。</li>
+                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px; margin-top: 25px;">二、 坊市秘宝 (核心养成)</h3>
+                    <ul style="padding-left: 20px;">
+                        <li><b>🏮 法宝 (被动增强)：</b>放入上方槽位，提供永久的倍率或筹码光环。</li>
+                        <li><b>🔯 星辰符箓 (牌库炼化)：</b>一次性消耗品。可永久提升手牌上限，甚至<b>撕毁/克隆你的母本卡牌</b>！极度危险但收益巨大。</li>
+                        <li><b>📖 功法秘籍 (牌型突破)：</b>一次性消耗品。购买后可永久提升指定牌型的等级。</li>
                     </ul>
 
                     <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px; margin-top: 25px;">三、 💀 天道劫数 (Boss战)</h3>
-                    <p>每 3 重天遭遇强力 Boss 改变规则：</p>
-                    <ul style="padding-left: 18px; margin: 8px 0;">
-                        <li><b>黑白无常：</b>红桃♥与方块♦面值不计分 (0分)。</li>
-                        <li><b>铁面判官：</b>每次出牌随机永久撕毁牌库中的1张牌。</li>
-                        <li><b>阎罗王：</b>起手 3 张牌将【背面朝上】盲打。</li>
+                    <p>每突破 3 重天，将遭遇强力 Boss 镇守。它们会改变游戏规则：</p>
+                    <ul style="padding-left: 20px;">
+                        <li><b>黑白无常：</b>红桃♥与方块♦面值失效 (0分)。</li>
+                        <li><b>铁面判官：</b>每次出牌后，判官随机撕毁牌库中的1张牌。</li>
+                        <li><b>阎罗王：</b>起手部分卡牌将【背面朝上】，必须盲打。</li>
                     </ul>
                     
-                    <h3 style="margin-top: 30px; text-align: center; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 22px;">🏆 初始功法基础账本 (Lv.1)</h3>
-                    <table style="width: 100%; text-align: center; border-collapse: collapse; margin-top: 15px; font-size: 13px; background-color: rgba(255,255,255,0.8);">
+                    <h3 style="margin-top: 30px; text-align: center; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 24px;">🏆 初始功法基础账本 (Lv.1)</h3>
+                    <table style="width: 100%; text-align: center; border-collapse: collapse; margin-top: 15px; font-size: 14px; background-color: rgba(255,255,255,0.7); box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden;">
                         <tr style="background-color: #EAE5D9; color: #5D4037;">
-                            <th style="padding: 8px; border: 1px solid #D8D3C5;">牌型</th><th style="padding: 8px; border: 1px solid #D8D3C5;">初始筹码</th><th style="padding: 8px; border: 1px solid #D8D3C5;">初始倍率</th>
+                            <th style="padding: 10px; border: 1px solid #D8D3C5;">牌型</th>
+                            <th style="padding: 10px; border: 1px solid #D8D3C5;">初始筹码</th>
+                            <th style="padding: 10px; border: 1px solid #D8D3C5;">初始倍率</th>
                         </tr>
-                        <tr><td>同花五条</td><td style="color:#A63C3C;font-weight:bold;">160</td><td style="color:#8C7A6B;font-weight:bold;">×16</td></tr>
-                        <tr style="background-color: rgba(0,0,0,0.02);"><td>同花顺</td><td style="color:#A63C3C;font-weight:bold;">100</td><td style="color:#8C7A6B;font-weight:bold;">×8</td></tr>
-                        <tr><td>四条</td><td style="color:#A63C3C;font-weight:bold;">60</td><td style="color:#8C7A6B;font-weight:bold;">×7</td></tr>
-                        <tr style="background-color: rgba(0,0,0,0.02);"><td>葫芦</td><td style="color:#A63C3C;font-weight:bold;">40</td><td style="color:#8C7A6B;font-weight:bold;">×4</td></tr>
-                        <tr><td>同花 / 顺子</td><td style="color:#A63C3C;font-weight:bold;">35 / 30</td><td style="color:#8C7A6B;font-weight:bold;">×4</td></tr>
-                        <tr style="background-color: rgba(0,0,0,0.02);"><td>三条</td><td style="color:#A63C3C;font-weight:bold;">30</td><td style="color:#8C7A6B;font-weight:bold;">×3</td></tr>
-                        <tr><td>两对 / 一对</td><td style="color:#A63C3C;font-weight:bold;">20 / 10</td><td style="color:#8C7A6B;font-weight:bold;">×2</td></tr>
-                        <tr style="background-color: rgba(0,0,0,0.02);"><td>高牌</td><td style="color:#A63C3C;font-weight:bold;">5</td><td style="color:#8C7A6B;font-weight:bold;">×1</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #D8D3C5;">同花五条</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">160</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×16</td></tr>
+                        <tr style="background-color: rgba(0,0,0,0.02);"><td style="padding: 8px; border: 1px solid #D8D3C5;">皇家同花顺 / 同花顺</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">100</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×8</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #D8D3C5;">四条</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">60</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×7</td></tr>
+                        <tr style="background-color: rgba(0,0,0,0.02);"><td style="padding: 8px; border: 1px solid #D8D3C5;">葫芦</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">40</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×4</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #D8D3C5;">同花 / 顺子</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">35 / 30</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×4</td></tr>
+                        <tr style="background-color: rgba(0,0,0,0.02);"><td style="padding: 8px; border: 1px solid #D8D3C5;">三条</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">30</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×3</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #D8D3C5;">两对 / 一对</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">20 / 10</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×2</td></tr>
+                        <tr style="background-color: rgba(0,0,0,0.02);"><td style="padding: 8px; border: 1px solid #D8D3C5;">高牌</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #A63C3C; font-weight:bold;">5</td><td style="padding: 8px; border: 1px solid #D8D3C5; color: #8C7A6B; font-weight:bold;">×1</td></tr>
                     </table>
                 </div>
                 <div style="text-align: center; margin-top: 30px;">
-                    <button id="btn-close-rules" style="background-color: #8C7A6B; padding: 12px 45px; font-size: 18px; color: white; border:none; border-radius:6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-weight:bold;">我悟了 (关闭)</button>
+                    <button id="btn-close-rules" style="background-color: #8C7A6B; padding: 12px 45px; font-size: 18px; color: white; border:none; border-radius:4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-weight:bold;">我悟了 (关闭)</button>
                 </div>
             </div>
         `;
@@ -498,9 +383,9 @@ const Renderer = {
         DOM.overlay.classList.remove('hidden');
         DOM.overlay.innerHTML = `
             <div class="shop-panel" style="padding:50px; text-align:center;">
-                <h2 style="color: #A63C3C; font-family: 'Ma Shan Zheng', cursive; font-size: 52px; margin:0;">💀 身死道消</h2>
-                <p style="margin-top: 20px; color:#666; font-size: 18px;">未能突破天道壁垒...</p>
-                <button id="btn-restart" style="margin-top: 35px; background-color: #5D4037; padding: 14px 45px; font-size: 20px; color: white; border:none; border-radius:8px; box-shadow: 0 6px 15px rgba(0,0,0,0.2); font-weight:bold;">重入轮回</button>
+                <h2 style="color: #A63C3C; font-family: 'Ma Shan Zheng', cursive; font-size: 56px; margin:0;">💀 身死道消</h2>
+                <p style="margin-top: 20px; color:#666; font-size: 18px;">出牌与弃牌次数已耗尽，未能突破天道壁垒...</p>
+                <button id="btn-restart" style="margin-top: 35px; background-color: #5D4037; padding: 14px 40px; font-size: 20px; color: white; border:none; border-radius:6px; box-shadow: 0 6px 15px rgba(0,0,0,0.2); font-weight:bold;">重入轮回 (重新开始)</button>
             </div>
         `;
     },
