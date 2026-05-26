@@ -82,24 +82,40 @@ const Renderer = {
     },
 
     renderHand() {
-        DOM.hand.innerHTML = ''; 
+        DOM.hand.innerHTML = '';
+        const count = state.hand.length;
+        if (count === 0) return;
+
+        // 扇形展开：计算每张牌的位移和旋转
+        const totalSpread = Math.min(count * 55, 360); // 总展开宽度
+        const startX = -totalSpread / 2; // 从左侧开始偏移
+
         state.hand.forEach((card, index) => {
             const cardEl = document.createElement('div');
             cardEl.className = 'playing-card';
-            cardEl.dataset.index = index; 
-            
+            cardEl.dataset.index = index;
+
             if (state.selectedCardIds.includes(card.id)) cardEl.classList.add('selected');
             if (state.currentBoss === '阎罗王' && index < 3) cardEl.classList.add('is-back');
 
+            // 扇形算法：均匀分布 + 轻微弧度旋转
+            const xOffset = startX + (index / Math.max(count - 1, 1)) * totalSpread;
+            // 旋转：中间牌平直，两边逐渐倾斜
+            const t = (index / Math.max(count - 1, 1)) - 0.5; // -0.5 ... +0.5
+            const rotation = t * Math.min(count * 2.5, 12); // 最多 ±12 度
+
+            cardEl.style.transform = `translateX(${xOffset}px) rotate(${rotation}deg)`;
+            cardEl.style.zIndex = index; // 越后面越上层
+
             const isRed = (card.suit === 1 || card.suit === 3);
             const colorClass = isRed ? 'ink-red' : 'ink-black';
-            
+
             cardEl.innerHTML = `
                 <div class="card-top ${colorClass}">${card.rankName}<br>${SUITS[card.suit].symbol}</div>
                 <div class="card-center ${colorClass}">${card.rankCName}</div>
                 <div class="card-bottom ${colorClass}">${card.rankName}<br>${SUITS[card.suit].symbol}</div>
             `;
-            
+
             cardEl.onmouseenter = () => AudioEngine.play('hover');
             DOM.hand.appendChild(cardEl);
         });

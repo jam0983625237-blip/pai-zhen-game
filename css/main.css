@@ -113,10 +113,10 @@ body {
 #hand-container {
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 10px;
+    align-items: center;
+    padding: 20px 10px 10px 10px;
+    min-height: 200px;
+    position: relative;
 }
 
 #action-bar {
@@ -130,7 +130,9 @@ body {
     border: 2px solid #D8D3C5;
     box-shadow: 2px 6px 15px rgba(0,0,0,0.08), inset 0 0 15px rgba(212,175,55,0.05);
     border-radius: 10px;
-    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.2s ease,
+                z-index 0s;
     cursor: pointer;
     position: relative;
     width: 110px;
@@ -141,18 +143,27 @@ body {
     padding: 10px;
     box-sizing: border-box;
     flex-shrink: 0;
+    will-change: transform;
 }
 .playing-card::after {
     content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
     border: 1px dashed rgba(212, 175, 55, 0.4); border-radius: 4px; pointer-events: none;
 }
 
-.playing-card:hover { transform: translateY(-12px); box-shadow: 2px 15px 35px rgba(0,0,0,0.15); }
+/* 悬停：弹起 + 扶正 */
+.playing-card:hover {
+    transform: translateY(-25px) rotate(0deg) !important;
+    box-shadow: 2px 20px 40px rgba(0,0,0,0.2);
+    z-index: 100 !important;
+}
+
+/* 选中：更高 + 金框 + 扶正 */
 .playing-card.selected {
     border-color: #D4AF37;
-    box-shadow: 0 0 0 2px #D4AF37, 0 20px 45px rgba(212,175,55,0.4);
-    transform: translateY(-25px) scale(1.05);
-    z-index: 50;
+    border-width: 3px;
+    box-shadow: 0 0 0 3px #D4AF37, 0 20px 45px rgba(212,175,55,0.4);
+    transform: translateY(-35px) rotate(0deg) !important;
+    z-index: 200 !important;
 }
 
 .playing-card.is-back {
@@ -366,7 +377,7 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
     box-shadow: 0 8px 32px rgba(0,0,0,0.12);
 }
 
-/* 全屏模式下：缩小内容，确保全部可见 */
+/* 全屏模式下：卡牌稍微缩小，扇形更紧凑 */
 @media screen and (display-mode: fullscreen) {
     #game-container {
         padding: 8px;
@@ -376,6 +387,9 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
         width: 25%;
         min-width: 180px;
         max-width: 280px;
+    }
+    #hand-container {
+        min-height: 170px;
     }
     .playing-card {
         width: 95px;
@@ -466,16 +480,12 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
         justify-content: space-between;
     }
 
-    /* 手牌：横向滚动，卡牌缩小 */
+    /* 手牌：扇形堆叠 + 横向滚动兜底 */
     #hand-container {
-        flex-wrap: nowrap;
+        padding: 15px 5px 5px 5px;
+        min-height: 120px;
         overflow-x: auto;
-        gap: 5px;
-        padding: 5px;
-        justify-content: flex-start;
         -webkit-overflow-scrolling: touch;
-        flex: 1;
-        align-items: center;
     }
 
     .playing-card {
@@ -486,7 +496,10 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
         flex-shrink: 0;
     }
     .playing-card.selected {
-        transform: translateY(-10px) scale(1.02);
+        transform: translateY(-18px) rotate(0deg) !important;
+    }
+    .playing-card:hover {
+        transform: translateY(-12px) rotate(0deg) !important;
     }
     .card-top, .card-bottom {
         font-size: 10px;
