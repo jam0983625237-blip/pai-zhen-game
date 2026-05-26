@@ -44,7 +44,7 @@ const AudioEngine = {
 };
 
 if (!document.getElementById('xianxia-theme')) {
-    // 🔍 自动检查移动端视口标签，如果没有则强行注入，防止手机端字太小
+    // 🔍 确保手机端视口标签，强制注入以防万一
     if (!document.querySelector('meta[name="viewport"]')) {
         const meta = document.createElement('meta');
         meta.name = "viewport";
@@ -62,6 +62,7 @@ if (!document.getElementById('xianxia-theme')) {
             transition: background 0.5s ease;
             margin: 0; padding: 10px;
             box-sizing: border-box;
+            display: flex; flex-direction: column; height: 100vh;
         }
         
         /* 基础手牌：宣纸底色 + 高级修长比例 */
@@ -166,105 +167,95 @@ if (!document.getElementById('xianxia-theme')) {
         button:active { transform: scale(0.98); }
 
         /* ------------------------------------------ */
-        /* ✨✨✨ 核心：大杀器！智能手机端移动适配 ✨✨✨ */
+        /* ✨✨✨ 核心：大杀器！智能手机端移动适配（深度适配终极版） ✨✨✨ */
         /* ------------------------------------------ */
         @media screen and (max-width: 768px) {
-            body { padding: 0 !important; }
-
-            /* 整体游戏容器：取消最大宽度限制，全屏铺满 */
-            #game-container {
-                max-width: 100% !important;
-                width: 100vw !important;
-                border-radius: 0 !important;
-            }
-
-            /* HUD 信息栏：缩小字体，防止挤压重叠 */
-            .hud-top { font-size: 14px !important; flex-wrap: wrap !important; gap: 6px !important; }
-            .hud-middle { font-size: 13px !important; }
-            #target-score, #current-score { font-size: 16px !important; }
-
-            /* 法宝槽：横向滚动，每张法宝缩小 */
-            #joker-container {
-                gap: 6px !important;
+            body { padding: 5px; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+            
+            /* ✨ 1. 深度适配：顶部的 HUD 信息栏 */
+            #hud-top { 
                 flex-wrap: nowrap !important;
-                justify-content: flex-start !important;
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch;
-                margin-top: 10px !important;
-                min-height: auto !important;
-                padding: 0 5px !important;
+                justify-content: space-between !important;
+                padding: 3px 5px !important;
+                font-size: 13px !important;
+                height: 30px !important; /* 强制压缩高度 */
+                line-height: 1.2 !important;
+                position: relative !important;
             }
-            .joker-card {
-                min-width: 75px !important;
-                width: 75px !important;
-                height: auto !important;
-                padding: 6px 4px !important;
-                flex-shrink: 0;
+            #hud-top div { 
+                margin: 0 !important; 
+                flex: 0 0 auto !important;
+                text-align: left !important;
             }
-            .joker-card .joker-name, .joker-card > div:first-child { font-size: 11px !important; margin-bottom: 2px !important; }
-            .joker-card .joker-desc, .joker-card > div:last-child { font-size: 9px !important; }
+            #hud-top div b { font-size: 14px !important; }
+            #money-display { font-size: 15px !important; margin-left: 10px !important;}
+            #money-display b { font-size: 17px !important; }
 
-            /* 手牌容器：允许横向滚动，8张牌也能全部装下 */
-            #hand-container {
+            /* ✨ 2. 深度适配：底部的出牌和弃牌按钮 */
+            #controls-bottom {
+                width: 100% !important;
+                position: absolute !important;
+                bottom: 15px !important;
+                left: 0 !important;
+                padding: 0 10px !important;
+                box-sizing: border-box !important;
                 display: flex !important;
-                flex-wrap: nowrap !important;
-                overflow-x: auto !important;
-                padding: 8px 5px !important;
-                gap: 4px !important;
-                justify-content: flex-start !important;
-                -webkit-overflow-scrolling: touch;
-                margin-bottom: 80px !important; /* 给底部按钮留空间 */
+                justify-content: center !important;
+                gap: 15px !important;
+                margin-top: 0 !important;
             }
-            .playing-card {
-                min-width: 58px !important;
-                max-width: 65px !important;
-                padding: 3px !important;
-                flex-shrink: 0 !important;
-                flex: none !important;
-                border-radius: 4px !important;
-            }
-            .playing-card.selected { transform: translateY(-12px) scale(1.03) !important; }
-            .card-center { font-size: 20px !important; }
-            .card-top, .card-bottom { font-size: 10px !important; }
-
-            /* 按钮区：固定在底部，横向排列 */
-            #action-bar {
-                bottom: 10px !important;
-                right: 10px !important;
-                flex-direction: row !important;
-                gap: 8px !important;
-                z-index: 50;
-            }
-            #action-bar button {
-                padding: 10px 20px !important;
+            #btn-play, #btn-discard {
+                flex: 1 !important; /* 手机端按钮并排，各占一半 */
+                padding: 10px 0 !important;
                 font-size: 16px !important;
+                font-weight: bold !important;
                 border-radius: 6px !important;
             }
 
-            /* 坊市面板：单列、全宽 */
-            .shop-panel { padding: 15px !important; width: 100% !important; max-height: 90vh; overflow-y: auto; border-radius: 0 !important; }
-            .shop-panel h2 { font-size: 24px !important; }
-            .shop-items { gap: 10px !important; flex-wrap: wrap !important; }
-            .shop-item-card, .sold-out {
-                width: calc(50% - 6px) !important;
-                min-width: 0 !important;
-                padding: 10px !important;
+            /* 手牌排列：允许拥挤堆叠，防溢出 */
+            #hand { 
+                display: flex !important; 
+                flex-wrap: nowrap !important; 
+                overflow-x: auto !important; 
+                padding: 10px 5px !important;
+                gap: 5px !important;
+                justify-content: flex-start !important;
+                -webkit-overflow-scrolling: touch;
+                margin-bottom: 60px !important; /* ✨ 为底部按钮留足空间 */
             }
-            .shop-item-title { font-size: 13px !important; margin-bottom: 5px !important; }
-            .shop-item-desc { font-size: 10px !important; line-height: 1.3 !important; }
-            .shop-item-price { font-size: 13px !important; }
+            .playing-card {
+                min-width: 70px !important;
+                max-width: 85px !important;
+                padding: 4px !important;
+                margin-top: -10px !important; /* 精简顶部间距 */
+            }
+            .playing-card.selected { 
+                transform: translateY(-20px) scale(1.03) !important;
+            }
+            .card-center { font-size: 26px !important; }
+            .card-top, .card-bottom { font-size: 13px !important; }
 
-            /* 规则面板 */
-            table { font-size: 10px !important; }
-            th, td { padding: 3px 2px !important; }
+            /* 手机端法宝槽 */
+            #jokers { gap: 8px !important; flex-wrap: wrap !important; justify-content: center !important; }
+            .joker-card { width: 100px !important; padding: 8px !important; }
+
+            /* 手机端坊市面板：改为双列横排或单列，防止挤压 */
+            .shop-panel { padding: 15px !important; width: 100% !important; max-height: 90vh; overflow-y: auto; }
+            .shop-panel h2 { font-size: 28px !important; }
+            .shop-items { gap: 12px !important; }
+            .shop-item-card, .sold-out { 
+                width: calc(50% - 6px) !important; /* 一排排两个，完美利用手机空间 */
+                min-width: 140px !important;
+                padding: 12px !important;
+            }
+            .shop-item-title { font-size: 14px !important; margin-bottom: 6px !important; }
+            .shop-item-desc { font-size: 11px !important; line-height: 1.4 !important; }
+            
+            /* 规则说明书表格在手机端防止撑爆 */
+            table { font-size: 11px !important; }
+            th, td { padding: 4px !important; }
 
             #btn-next-round { width: 100% !important; padding: 10px 0 !important; font-size: 16px !important; }
-
-            /* 得分特效在手机端稍微缩小 */
-            .floating-score { top: 35% !important; }
-            .floating-score > div:first-child { font-size: 22px !important; }
-            .floating-score > div:nth-child(2) { font-size: 16px !important; }
-            .floating-score > div:last-child { font-size: 36px !important; }
         }
         
         @keyframes floatUpAndFade {
