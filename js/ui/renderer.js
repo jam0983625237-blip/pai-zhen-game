@@ -48,27 +48,36 @@ if (!document.getElementById('xianxia-theme')) {
     style.id = 'xianxia-theme';
     style.innerHTML = `
         /* ==============================================
-           左三右七 完美横向布局
+           左三右七 横向布局
            ============================================== */
         body {
-            display: grid;
-            grid-template-columns: 30% 70%;
-            grid-template-rows: 1fr;
-            background: linear-gradient(135deg, #EAE5D9 0%, #D8D3C5 100%);
-            color: #4A4A4A;
-            font-family: 'Noto Serif SC', serif;
-            margin: 0; padding: 20px;
-            box-sizing: border-box;
+            margin: 0; padding: 0;
             height: 100vh;
             overflow: hidden;
-            gap: 20px;
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #EAE5D9 0%, #D8D3C5 100%);
+        }
+
+        #game-container {
+            display: grid !important;
+            grid-template-columns: 30% 70%;
+            grid-template-rows: 1fr;
+            width: 100vw;
+            max-width: 100%;
+            height: 100vh;
+            background: transparent;
+            box-shadow: none;
+            overflow: hidden;
+            gap: 15px;
+            padding: 15px;
+            box-sizing: border-box;
         }
 
         /* ========== 左侧面板 ========== */
         #left-panel {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             overflow: hidden;
         }
 
@@ -76,11 +85,11 @@ if (!document.getElementById('xianxia-theme')) {
             background: rgba(253, 252, 247, 0.7);
             border: 2px solid #D8D3C5;
             border-radius: 14px;
-            padding: 20px 18px;
+            padding: 18px 15px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            font-size: 16px;
+            gap: 8px;
+            font-size: 15px;
             flex-shrink: 0;
         }
 
@@ -88,7 +97,7 @@ if (!document.getElementById('xianxia-theme')) {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 1px dashed rgba(216,211,197, 0.8);
             color: #5D4037;
         }
@@ -96,7 +105,7 @@ if (!document.getElementById('xianxia-theme')) {
 
         .hud-divider {
             border-top: 1px solid #D8D3C5;
-            margin: 4px 0;
+            margin: 2px 0;
         }
 
         #info-ante {
@@ -105,7 +114,7 @@ if (!document.getElementById('xianxia-theme')) {
             color: #5D4037;
             text-align: center;
             border-bottom: 2px solid #D8D3C5 !important;
-            padding-bottom: 10px !important;
+            padding-bottom: 8px !important;
         }
 
         #current-score { color: #A63C3C; font-size: 22px; font-weight: bold; }
@@ -114,7 +123,7 @@ if (!document.getElementById('xianxia-theme')) {
         #joker-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             overflow-y: auto;
             align-content: start;
             flex: 1;
@@ -130,6 +139,7 @@ if (!document.getElementById('xianxia-theme')) {
             align-items: center;
             gap: 20px;
             padding-bottom: 10px;
+            overflow: hidden;
         }
 
         #hand-container {
