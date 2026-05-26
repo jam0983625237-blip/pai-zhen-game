@@ -86,10 +86,18 @@ const Renderer = {
         const count = state.hand.length;
         if (count === 0) return;
 
-        // 真扇形：底部为轴心旋转，底部聚拢顶部散开
+        // 斗地主式握牌：底部紧密重叠，每张只露左边缘
         const isMobile = window.innerWidth <= 768;
-        const arcTotal = Math.min(count * 6, 40); // 总弧度，最多40度
+        const cardW = isMobile ? 60 : 110;
+        const visiblePerCard = isMobile ? 20 : 26; // 每张牌露出的宽度（仅左边缘花色+数字）
+
+        // 扇形弧度
+        const arcTotal = Math.min(count * 4, 30);
         const startAngle = -arcTotal / 2;
+
+        // 整副手牌总宽度
+        const totalWidth = cardW + (count - 1) * visiblePerCard;
+        const startX = -totalWidth / 2;
 
         state.hand.forEach((card, index) => {
             const cardEl = document.createElement('div');
@@ -99,15 +107,14 @@ const Renderer = {
             if (state.selectedCardIds.includes(card.id)) cardEl.classList.add('selected');
             if (state.currentBoss === '阎罗王' && index < 3) cardEl.classList.add('is-back');
 
-            // 旋转：底部为轴，均匀分布弧度
+            // 角度
             const t = (count > 1) ? index / (count - 1) : 0.5;
             const angle = startAngle + t * arcTotal;
 
-            // 重叠偏移：让牌在底部轻微水平错开
-            const overlapPx = isMobile ? 12 : 18;
-            const xShift = (index - (count - 1) / 2) * overlapPx;
+            // 水平位置：从 startX 起，每张偏移 visiblePerCard
+            const xPos = startX + index * visiblePerCard;
 
-            cardEl.style.transform = `rotate(${angle}deg) translateX(${xShift}px)`;
+            cardEl.style.transform = `translateX(${xPos}px) rotate(${angle}deg)`;
             cardEl.style.transformOrigin = 'bottom center';
             cardEl.style.zIndex = index;
 
