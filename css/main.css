@@ -356,7 +356,45 @@ td { padding: 8px; border: 1px solid #D8D3C5; }
     pointer-events: none;
     text-align: center;
     animation: floatUpAndFade 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    /* 毛玻璃背景 */
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 16px 28px;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+/* 全屏模式下：缩小内容，确保全部可见 */
+@media screen and (display-mode: fullscreen) {
+    #game-container {
+        padding: 8px;
+        gap: 8px;
+    }
+    #left-panel {
+        width: 25%;
+        min-width: 180px;
+        max-width: 280px;
+    }
+    .playing-card {
+        width: 95px;
+        height: 138px;
+        padding: 8px;
+    }
+    .card-center { font-size: 32px; }
+    .card-top, .card-bottom { font-size: 14px; }
+    #btn-play, #btn-discard {
+        width: 130px;
+        height: 46px;
+        font-size: 17px;
+    }
+    #hud-box {
+        padding: 12px 10px;
+        font-size: 13px;
+    }
+    #info-ante { font-size: 17px; }
+    #current-score { font-size: 18px; }
 }
 
 /* ============================================================

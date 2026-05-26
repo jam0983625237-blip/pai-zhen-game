@@ -55,7 +55,7 @@ function bindEvents() {
         const rulesBtn = document.createElement('button');
         rulesBtn.id = 'btn-rules-floating';
         rulesBtn.innerText = '📜 规则说明';
-        rulesBtn.style.cssText = "position:fixed; top:20px; left:20px; z-index:50; background:#8C7A6B; color:white; padding:8px 15px; font-size:16px; border:none; border-radius:4px; cursor:pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);";
+        rulesBtn.style.cssText = "position:fixed; top:12px; left:12px; z-index:99999; background:rgba(140,122,107,0.7); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); color:white; padding:8px 14px; font-size:14px; border:1px solid rgba(255,255,255,0.3); border-radius:4px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.15); transition:background 0.2s;";
         document.body.appendChild(rulesBtn);
         rulesBtn.addEventListener('click', () => { AudioEngine.play('click'); Renderer.renderRules(); });
     }
@@ -64,7 +64,7 @@ function bindEvents() {
         const fsBtn = document.createElement('button');
         fsBtn.id = 'btn-fullscreen';
         fsBtn.innerText = '⛶ 全屏';
-        fsBtn.style.cssText = "position:fixed; top:20px; right:20px; z-index:99999; background:#D4AF37; color:#5D4037; padding:10px 18px; font-size:18px; font-weight:bold; border:none; border-radius:6px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);";
+        fsBtn.style.cssText = "position:fixed; top:12px; right:12px; z-index:99999; background:rgba(212,175,55,0.7); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); color:#5D4037; padding:8px 14px; font-size:14px; font-weight:bold; border:1px solid rgba(255,255,255,0.3); border-radius:6px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,0.15); transition:background 0.2s;";
         document.body.appendChild(fsBtn);
         fsBtn.addEventListener('click', () => {
             AudioEngine.play('click');
