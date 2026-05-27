@@ -159,11 +159,11 @@ const Renderer = {
 
         DOM.overlay.innerHTML = `
             <div class="shop-panel" style="padding: 40px; box-sizing: border-box;">
-                <h2 style="color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 42px; border-bottom: 2px solid #D8D3C5; padding-bottom: 15px; text-align:center; margin:0;">🏮 坊 市 🏮</h2>
-                <p style="margin-top: 15px; color: #666; text-align:center; font-size: 18px;">渡劫成功。当前盘缠：<b style="color: #D4AF37; font-size: 24px;">💰 ${state.money} 两</b></p>
+                <h2 style="color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 28px; border-bottom: 2px solid #D8D3C5; padding-bottom: 10px; text-align:center; margin:0;">🏮 坊 市 🏮</h2>
+                <p style="margin-top: 10px; color: #666; text-align:center; font-size: 15px;">渡劫成功。当前盘缠：<b style="color: #D4AF37; font-size: 18px;">💰 ${state.money} 两</b></p>
                 <div class="shop-items">${itemsHtml}</div>
-                <div style="text-align:center; margin-top: 20px;">
-                    <button id="btn-next-round" style="background-color: #8C7A6B; padding: 16px 60px; font-size: 22px; color: white; border:none; border-radius:30px; box-shadow: 0 8px 25px rgba(140,122,107,0.3); font-weight:bold; letter-spacing: 2px; cursor: pointer;">踏入下一劫</button>
+                <div style="text-align:center; margin-top: 15px;">
+                    <button id="btn-next-round" style="background-color: #8C7A6B; padding: 12px 50px; font-size: 18px; color: white; border:none; border-radius:30px; box-shadow: 0 8px 25px rgba(140,122,107,0.3); font-weight:bold; letter-spacing: 2px; cursor: pointer;">踏入下一劫</button>
                 </div>
             </div>
         `;
@@ -172,29 +172,29 @@ const Renderer = {
     renderRules() {
         DOM.overlay.classList.remove('hidden');
         DOM.overlay.innerHTML = `
-            <div class="shop-panel" style="max-height: 85vh; overflow-y: auto; text-align: left; padding: 40px; width: 90%; max-width: 800px; color: #4A4A4A; margin: auto;">
-                <h2 style="text-align: center; margin-bottom: 20px; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 42px;">📜 天道法则卷宗</h2>
-                <div style="line-height: 1.8; font-size: 16px;">
-                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px;">一、 基础渡劫</h3>
+            <div class="shop-panel" style="max-height: 80vh; overflow-y: auto; text-align: left; padding: 20px 25px; width: 90%; max-width: 700px; color: #4A4A4A; margin: auto;">
+                <h2 style="text-align: center; margin-bottom: 12px; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 28px;">📜 天道法则卷宗</h2>
+                <div style="line-height: 1.6; font-size: 13px;">
+                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 3px; font-size:15px;">一、 基础渡劫</h3>
                     <p>在有限次数内使总分达标。公式：<br><b>单手得分 = (功法筹码 + 牌面值) × (功法倍率 + 法宝倍率)</b><br>
-                    <span style="color:#A63C3C; font-size:14px;">* 秘诀：选5张毫无关联的牌只算最大那张（高牌），可作为变相弃牌战术！</span></p>
-                    
-                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px; margin-top: 25px;">二、 坊市秘宝</h3>
-                    <ul style="padding-left: 20px; margin: 10px 0;">
+                    <span style="color:#A63C3C; font-size:12px;">* 秘诀：选5张毫无关联的牌只算最大那张（高牌），可作为变相弃牌战术！</span></p>
+
+                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 3px; margin-top: 18px; font-size:15px;">二、 坊市秘宝</h3>
+                    <ul style="padding-left: 15px; margin: 6px 0; font-size:13px;">
                         <li><b>🏮 法宝：</b>放入左侧槽位，提供永久光环。</li>
                         <li><b>🔯 符箓：</b>一次性消耗。可炼化母本牌库、永久扩充手牌。</li>
                         <li><b>📖 秘籍：</b>一次性消耗。永久提升指定牌型的基础功法阶级。</li>
                     </ul>
 
-                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 5px; margin-top: 25px;">三、 💀 天道劫数 (Boss战)</h3>
+                    <h3 style="color: #8C7A6B; border-bottom: 1px solid #D8D3C5; padding-bottom: 3px; margin-top: 18px; font-size:15px;">三、 💀 天道劫数 (Boss战)</h3>
                     <p>每 3 重天遭遇强力 Boss 镇守，它们会改变游戏规则：</p>
-                    <ul style="padding-left: 20px; margin: 10px 0;">
+                    <ul style="padding-left: 15px; margin: 6px 0; font-size:13px;">
                         <li><b>黑白无常：</b>红桃♥与方块♦面值不计分 (0分)。</li>
                         <li><b>铁面判官：</b>每次出牌随机永久撕毁牌库中的1张牌。</li>
                         <li><b>阎罗王：</b>起手 3 张牌将【背面朝上】盲打。</li>
                     </ul>
-                    
-                    <h3 style="margin-top: 35px; text-align: center; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 26px;">🏆 初始功法基础账本 (Lv.1)</h3>
+
+                    <h3 style="margin-top: 20px; text-align: center; color: #5D4037; font-family: 'Ma Shan Zheng', cursive; font-size: 20px;">🏆 初始功法基础账本 (Lv.1)</h3>
                     <table>
                         <tr><th>牌型</th><th>初始筹码</th><th>初始倍率</th></tr>
                         <tr><td>同花五条</td><td style="color:#A63C3C;font-weight:bold;">160</td><td style="color:#8C7A6B;font-weight:bold;">×16</td></tr>
@@ -207,8 +207,8 @@ const Renderer = {
                         <tr style="background-color: rgba(0,0,0,0.02);"><td>高牌</td><td style="color:#A63C3C;font-weight:bold;">5</td><td style="color:#8C7A6B;font-weight:bold;">×1</td></tr>
                     </table>
                 </div>
-                <div style="text-align: center; margin-top: 35px;">
-                    <button id="btn-close-rules" style="background-color: #8C7A6B; padding: 14px 50px; font-size: 20px; color: white; border:none; border-radius:8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); font-weight:bold; cursor: pointer;">我悟了 (关闭)</button>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button id="btn-close-rules" style="background-color: #8C7A6B; padding: 10px 40px; font-size: 16px; color: white; border:none; border-radius:8px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); font-weight:bold; cursor: pointer;">我悟了 (关闭)</button>
                 </div>
             </div>
         `;
@@ -217,10 +217,10 @@ const Renderer = {
     renderGameOver() {
         DOM.overlay.classList.remove('hidden');
         DOM.overlay.innerHTML = `
-            <div class="shop-panel" style="padding:60px; text-align:center; max-width: 600px;">
-                <h2 style="color: #A63C3C; font-family: 'Ma Shan Zheng', cursive; font-size: 60px; margin:0;">💀 身死道消</h2>
-                <p style="margin-top: 25px; color:#666; font-size: 20px;">未能突破天道壁垒，您的修行止步于此...</p>
-                <button id="btn-restart" style="margin-top: 40px; background-color: #5D4037; padding: 16px 50px; font-size: 22px; color: white; border:none; border-radius:30px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); font-weight:bold; cursor: pointer;">重入轮回 (再战一局)</button>
+            <div class="shop-panel" style="padding:40px; text-align:center; max-width: 500px;">
+                <h2 style="color: #A63C3C; font-family: 'Ma Shan Zheng', cursive; font-size: 40px; margin:0;">💀 身死道消</h2>
+                <p style="margin-top: 15px; color:#666; font-size: 16px;">未能突破天道壁垒，您的修行止步于此...</p>
+                <button id="btn-restart" style="margin-top: 25px; background-color: #5D4037; padding: 12px 40px; font-size: 18px; color: white; border:none; border-radius:30px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); font-weight:bold; cursor: pointer;">重入轮回 (再战一局)</button>
             </div>
         `;
     },

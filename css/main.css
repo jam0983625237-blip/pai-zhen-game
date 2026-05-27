@@ -121,8 +121,8 @@ body {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    padding: 10px;
-    max-width: 500px; /* 4张牌 + 间距 = ~500px */
+    padding: 40px 10px 10px 10px; /* 顶部留空，选中弹起不切头 */
+    max-width: 500px;
     margin: 0 auto;
 }
 
@@ -272,12 +272,15 @@ body {
     border: 1px solid #D8D3C5;
     box-shadow: 0 20px 60px rgba(0,0,0,0.2);
     border-radius: 12px;
-    padding: 30px;
+    padding: 20px 25px;
     text-align: center;
     color: var(--ink-color);
     width: 95%;
-    max-width: 1000px;
+    max-width: 750px;
+    max-height: 85vh;
+    overflow-y: auto;
     box-sizing: border-box;
+    font-size: 14px;
 }
 
 .shop-items {
